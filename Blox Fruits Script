@@ -39,3 +39,11 @@ Name = <string> - The name of the toggle.
 Default = <bool> - The default value of the toggle.
 Callback = <function> - Auto Click.
 ]]
+
+local Section = Tab:AddSection({
+	Name = "Section"
+})
+
+--[[
+Name = <string> - Auto-Ataque.
+]]
