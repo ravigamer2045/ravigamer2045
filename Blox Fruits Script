@@ -40,7 +40,12 @@ Tab:AddToggle({
 	Name = "Auto-Combat",
 	Default = false,
 	Callback = function(Value)
-	    print(Value)
+	   local args = {
+    [1] = 1711699292.2726924
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Clock"):WaitForChild("DelayedRequestFunction"):InvokeServer(unpack(args))
+
 	end    
 })
 
