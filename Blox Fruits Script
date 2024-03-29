@@ -1,0 +1,9 @@
+while true do
+wait(0.0001)
+local args = {
+    [1] = "weaponChange",
+    [2] = "Combat"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("RigControllerEvent"):FireServer(unpack(args))
+ end
