@@ -1,0 +1,4 @@
+while true do
+ wait(0.0001)
+game:GetService("ReplicatedStorage"):WaitForChild("events-shared/network@GlobalEvents"):WaitForChild("placeBlock"):FireServer()
+end
