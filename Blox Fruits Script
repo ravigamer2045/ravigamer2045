@@ -21,13 +21,13 @@ local Tab = Window:MakeTab({
 })
 
 --[[
-Name = <string> - The name of the tab.
+Name = <string> - Auto-Farm.
 Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]] 
 
 Tab:AddToggle({
-	Name = "This is a toggle!",
+	Name = "Auto-Combat",
 	Default = false,
 	Callback = function(Value)
 		while true do
