@@ -24,7 +24,17 @@ local Tab = Window:MakeTab({
 Name = <string> - Auto-Farm.
 Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
-]] 
+]]
+
+while true do
+wait(0.0001)
+local args = {
+    [1] = Vector3.new(-7967.6962890625, 5541.84130859375, -363.2789001464844)
+}
+
+game:GetService("Players").LocalPlayer.Character.Combat.RemoteEvent:FireServer(unpack(args))
+}
+
 
 Tab:AddToggle({
 	Name = "Auto-Combat",
@@ -40,10 +50,4 @@ Default = <bool> - The default value of the toggle.
 Callback = <function> - Auto Click.
 ]]
 
-local Section = Tab:AddSection({
-	Name = "Section"
-})
 
---[[
-Name = <string> - Auto-Ataque.
-]]
