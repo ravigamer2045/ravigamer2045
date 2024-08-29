@@ -1,33 +1,46 @@
--- Defina a posição inicial do personagem
-local posicaoX, posicaoY = 0, 0
-local raioFOV = 100 -- Raio do campo de visão
+-- Módulo de movimentação do personagem
+local Movimentacao = {}
 
--- Lista de inimigos com suas posições
-local inimigos = {
-    {x = 50, y = 50},
-    {x = 80, y = 20},
-    {x = 30, y = 90}
-}
-
--- Função para verificar se um ponto está dentro do FOV
-function estaDentroDoFOV(x, y)
-    local distancia = math.sqrt((x - posicaoX)^2 + (y - posicaoY)^2)
-    return distancia <= raioFOV
+-- Inicializa a posição do personagem
+function Movimentacao.inicializar(x, y)
+    Movimentacao.posicaoX, Movimentacao.posicaoY = x, y
 end
 
--- Função para mover o personagem e atualizar o FOV
-function moverPersonagem(novoX, novoY)
-    posicaoX, posicaoY = novoX, novoY
-    print("Personagem movido para: (" .. posicaoX .. ", " .. posicaoY .. ")")
+-- Move o personagem para uma nova posição
+function Movimentacao.mover(novoX, novoY)
+    Movimentacao.posicaoX, Movimentacao.posicaoY = novoX, novoY
+    print("Personagem movido para: (" .. novoX .. ", " .. novoY .. ")")
 end
 
--- Função para encontrar o inimigo mais próximo
-function encontrarInimigoMaisProximo()
+-- Módulo de visão do personagem
+local Visao = {}
+
+-- Inicializa o raio do campo de visão
+function Visao.inicializar(raio)
+    Visao.raioFOV = raio
+end
+
+-- Verifica se um ponto está dentro do campo de visão
+function Visao.estaDentroDoFOV(x, y)
+    local distancia = math.sqrt((x - Movimentacao.posicaoX)^2 + (y - Movimentacao.posicaoY)^2)
+    return distancia <= Visao.raioFOV
+end
+
+-- Módulo de inimigos
+local Inimigos = {}
+
+-- Inicializa a lista de inimigos
+function Inimigos.inicializar(lista)
+    Inimigos.lista = lista
+end
+
+-- Encontra o inimigo mais próximo
+function Inimigos.encontrarMaisProximo()
     local menorDistancia = math.huge
     local inimigoMaisProximo = nil
 
-    for _, inimigo in ipairs(inimigos) do
-        local distancia = math.sqrt((inimigo.x - posicaoX)^2 + (inimigo.y - posicaoY)^2)
+    for _, inimigo in ipairs(Inimigos.lista) do
+        local distancia = math.sqrt((inimigo.x - Movimentacao.posicaoX)^2 + (inimigo.y - Movimentacao.posicaoY)^2)
         if distancia < menorDistancia then
             menorDistancia = distancia
             inimigoMaisProximo = inimigo
@@ -37,9 +50,9 @@ function encontrarInimigoMaisProximo()
     return inimigoMaisProximo
 end
 
--- Função para ajustar a mira para o inimigo mais próximo
-function ajustarMira()
-    local inimigo = encontrarInimigoMaisProximo()
+-- Ajusta a mira para o inimigo mais próximo
+function Inimigos.ajustarMira()
+    local inimigo = Inimigos.encontrarMaisProximo()
     if inimigo then
         print("Mira ajustada para o inimigo na posição: (" .. inimigo.x .. ", " .. inimigo.y .. ")")
     else
@@ -47,22 +60,27 @@ function ajustarMira()
     end
 end
 
--- Testa a função verificando se um ponto está dentro do FOV
+-- Exemplo de uso
+Movimentacao.inicializar(0, 0)
+Visao.inicializar(100)
+Inimigos.inicializar({
+    {x = 50, y = 50},
+    {x = 80, y = 20},
+    {x = 30, y = 90}
+})
+
 local pontoX, pontoY = 50, 50
-if estaDentroDoFOV(pontoX, pontoY) then
-    print("\27[35mO ponto (" .. pontoX .. ", " .. pontoY .. ") está dentro do FOV.\27[0m") -- Texto roxo
+if Visao.estaDentroDoFOV(pontoX, pontoY) then
+    print("O ponto (" .. pontoX .. ", " .. pontoY .. ") está dentro do FOV.")
 else
     print("O ponto (" .. pontoX .. ", " .. pontoY .. ") está fora do FOV.")
 end
 
--- Move o personagem e testa novamente
-moverPersonagem(30, 30)
-if estaDentroDoFOV(pontoX, pontoY) then
-    print("\27[35mO ponto (" .. pontoX .. ", " .. pontoY .. ") está dentro do FOV.\27[0m") -- Texto roxo
+Movimentacao.mover(30, 30)
+if Visao.estaDentroDoFOV(pontoX, pontoY) then
+    print("O ponto (" .. pontoX .. ", " .. pontoY .. ") está dentro do FOV.")
 else
     print("O ponto (" .. pontoX .. ", " .. pontoY .. ") está fora do FOV.")
 end
 
--- Ajusta a mira para o inimigo mais próximo
-ajustarMira()
-
+Inimigos.ajustarMira()
