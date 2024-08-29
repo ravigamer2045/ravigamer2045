@@ -1,0 +1,68 @@
+-- Defina a posição inicial do personagem
+local posicaoX, posicaoY = 0, 0
+local raioFOV = 100 -- Raio do campo de visão
+
+-- Lista de inimigos com suas posições
+local inimigos = {
+    {x = 50, y = 50},
+    {x = 80, y = 20},
+    {x = 30, y = 90}
+}
+
+-- Função para verificar se um ponto está dentro do FOV
+function estaDentroDoFOV(x, y)
+    local distancia = math.sqrt((x - posicaoX)^2 + (y - posicaoY)^2)
+    return distancia <= raioFOV
+end
+
+-- Função para mover o personagem e atualizar o FOV
+function moverPersonagem(novoX, novoY)
+    posicaoX, posicaoY = novoX, novoY
+    print("Personagem movido para: (" .. posicaoX .. ", " .. posicaoY .. ")")
+end
+
+-- Função para encontrar o inimigo mais próximo
+function encontrarInimigoMaisProximo()
+    local menorDistancia = math.huge
+    local inimigoMaisProximo = nil
+
+    for _, inimigo in ipairs(inimigos) do
+        local distancia = math.sqrt((inimigo.x - posicaoX)^2 + (inimigo.y - posicaoY)^2)
+        if distancia < menorDistancia then
+            menorDistancia = distancia
+            inimigoMaisProximo = inimigo
+        end
+    end
+
+    return inimigoMaisProximo
+end
+
+-- Função para ajustar a mira para o inimigo mais próximo
+function ajustarMira()
+    local inimigo = encontrarInimigoMaisProximo()
+    if inimigo then
+        print("Mira ajustada para o inimigo na posição: (" .. inimigo.x .. ", " .. inimigo.y .. ")")
+    else
+        print("Nenhum inimigo encontrado.")
+    end
+end
+
+-- Testa a função verificando se um ponto está dentro do FOV
+local pontoX, pontoY = 50, 50
+if estaDentroDoFOV(pontoX, pontoY) then
+    print("\27[35mO ponto (" .. pontoX .. ", " .. pontoY .. ") está dentro do FOV.\27[0m") -- Texto roxo
+else
+    print("O ponto (" .. pontoX .. ", " .. pontoY .. ") está fora do FOV.")
+end
+
+-- Move o personagem e testa novamente
+moverPersonagem(30, 30)
+if estaDentroDoFOV(pontoX, pontoY) then
+    print("\27[35mO ponto (" .. pontoX .. ", " .. pontoY .. ") está dentro do FOV.\27[0m") -- Texto roxo
+else
+    print("O ponto (" .. pontoX .. ", " .. pontoY .. ") está fora do FOV.")
+end
+
+-- Ajusta a mira para o inimigo mais próximo
+ajustarMira()
+
